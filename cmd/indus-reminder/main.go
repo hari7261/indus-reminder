@@ -36,9 +36,13 @@ func run() error {
 	}
 
 	now := time.Now().In(location)
-	if now.Weekday() == time.Sunday {
+	forceSend := strings.EqualFold(strings.TrimSpace(os.Getenv("FORCE_SEND")), "true")
+	if now.Weekday() == time.Sunday && !forceSend {
 		log.Printf("skip: Sunday in timezone %s", tz)
 		return nil
+	}
+	if now.Weekday() == time.Sunday && forceSend {
+		log.Printf("force_send enabled: bypassing Sunday skip in timezone %s", tz)
 	}
 
 	checklistPath := envOrDefault("CHECKLIST_FILE", defaultChecklistFile)

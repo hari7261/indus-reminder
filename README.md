@@ -13,6 +13,7 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 3. SMTP credentials and recipient are read from environment variables.
 4. The CLI sends one email via Gmail SMTP.
 5. Sundays are skipped both by cron (`1-6`) and by runtime guard.
+6. Manual `workflow_dispatch` supports `force_send=true` for Sunday-only delivery testing.
 
 ## Scheduling (UTC to Local)
 
@@ -37,6 +38,7 @@ Optional:
 - `MAIL_SUBJECT` (falls back to default subject if empty)
 - `REMINDER_TZ` (default `Asia/Kolkata`)
 - `CHECKLIST_FILE` (default `checklist.md`)
+- `FORCE_SEND` (default `false`, intended for manual Sunday testing)
 
 ## GitHub Setup
 
@@ -50,6 +52,7 @@ Optional:
 3. Optionally add repository variable `MAIL_SUBJECT`.
 4. Enable Actions in your fork.
 5. Run workflow manually once using `workflow_dispatch` to validate configuration.
+6. If testing on Sunday, run manual dispatch with input `force_send=true`.
 
 ## Local Build
 

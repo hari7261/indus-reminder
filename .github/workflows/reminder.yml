@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 11 * * 1-6"
   workflow_dispatch:
+    inputs:
+      force_send:
+        description: "Set true to bypass Sunday skip for manual testing"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -22,6 +28,7 @@ jobs:
       MAIL_SUBJECT: ${{ vars.MAIL_SUBJECT }}
       REMINDER_TZ: Asia/Kolkata
       CHECKLIST_FILE: checklist.md
+      FORCE_SEND: ${{ inputs.force_send || 'false' }}
 
     steps:
       - name: Checkout source
