@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <defs>
+    <style>
+      .title { font: 700 30px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .label { font: 600 17px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .small { font: 14px 'Segoe UI', sans-serif; fill: #334155; }
+      .step { fill: #ffffff; stroke: #0f172a; stroke-width: 2; rx: 10; }
+      .arrow { stroke: #0f172a; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f172a"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="760" fill="url(#bg)"/>
+  <text x="50" y="60" class="title">GitHub Actions Workflow Diagram</text>
+
+  <rect x="120" y="130" width="260" height="90" class="step"/>
+  <text x="165" y="170" class="label">Schedule Trigger</text>
+  <text x="145" y="198" class="small">cron: 30 10 * * 1-6 (UTC)</text>
+
+  <rect x="120" y="280" width="260" height="90" class="step"/>
+  <text x="165" y="320" class="label">Checkout Source</text>
+  <text x="190" y="348" class="small">actions/checkout@v4</text>
+
+  <rect x="120" y="430" width="260" height="90" class="step"/>
+  <text x="160" y="470" class="label">Setup Go Toolchain</text>
+  <text x="175" y="498" class="small">actions/setup-go@v5</text>
+
+  <rect x="500" y="280" width="280" height="90" class="step"/>
+  <text x="595" y="320" class="label">Build Binary</text>
+  <text x="540" y="348" class="small">go build ./cmd/indus-reminder</text>
+
+  <rect x="500" y="430" width="280" height="90" class="step"/>
+  <text x="585" y="470" class="label">Run Binary</text>
+  <text x="540" y="498" class="small">reads env + checklist, sends email</text>
+
+  <rect x="900" y="280" width="220" height="90" class="step"/>
+  <text x="955" y="320" class="label">Success</text>
+  <text x="925" y="348" class="small">email sent, exit code 0</text>
+
+  <rect x="900" y="430" width="220" height="90" class="step"/>
+  <text x="955" y="470" class="label">Failure</text>
+  <text x="920" y="498" class="small">SMTP error, non-zero exit</text>
+
+  <path class="arrow" d="M 250 220 L 250 280"/>
+  <path class="arrow" d="M 250 370 L 250 430"/>
+  <path class="arrow" d="M 380 475 L 500 475"/>
+  <path class="arrow" d="M 640 370 L 640 430"/>
+  <path class="arrow" d="M 780 475 L 900 325"/>
+  <path class="arrow" d="M 780 475 L 900 475"/>
+
+  <text x="120" y="620" class="small">Workflow also supports workflow_dispatch for manual validation.</text>
+  <text x="120" y="645" class="small">Secrets consumed: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, MAIL_TO.</text>
+</svg>

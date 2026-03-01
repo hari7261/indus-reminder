@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="760" viewBox="0 0 1300 760">
+  <defs>
+    <style>
+      .title { font: 700 30px 'Segoe UI', sans-serif; fill: #111827; }
+      .actor { font: 600 16px 'Segoe UI', sans-serif; fill: #111827; }
+      .small { font: 14px 'Segoe UI', sans-serif; fill: #374151; }
+      .lifeline { stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 6 6; }
+      .msg { stroke: #0f172a; stroke-width: 2; marker-end: url(#arr); }
+      .box { fill: #f8fafc; stroke: #0f172a; stroke-width: 1.5; rx: 6; }
+    </style>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1300" height="760" fill="#eff6ff"/>
+  <text x="40" y="55" class="title">Sequence Diagram - Reminder Email Send Flow</text>
+
+  <text x="90" y="105" class="actor">Scheduler</text>
+  <text x="350" y="105" class="actor">Runner</text>
+  <text x="620" y="105" class="actor">Go CLI</text>
+  <text x="900" y="105" class="actor">Mailer</text>
+  <text x="1130" y="105" class="actor">Gmail SMTP</text>
+
+  <line x1="120" y1="120" x2="120" y2="700" class="lifeline"/>
+  <line x1="380" y1="120" x2="380" y2="700" class="lifeline"/>
+  <line x1="650" y1="120" x2="650" y2="700" class="lifeline"/>
+  <line x1="930" y1="120" x2="930" y2="700" class="lifeline"/>
+  <line x1="1160" y1="120" x2="1160" y2="700" class="lifeline"/>
+
+  <line x1="120" y1="170" x2="380" y2="170" class="msg"/>
+  <text x="165" y="160" class="small">cron trigger</text>
+
+  <line x1="380" y1="230" x2="650" y2="230" class="msg"/>
+  <text x="445" y="220" class="small">execute binary</text>
+
+  <line x1="650" y1="290" x2="650" y2="320" class="msg"/>
+  <text x="670" y="310" class="small">load checklist.md</text>
+
+  <line x1="650" y1="370" x2="930" y2="370" class="msg"/>
+  <text x="720" y="360" class="small">Send(cfg, message)</text>
+
+  <line x1="930" y1="430" x2="1160" y2="430" class="msg"/>
+  <text x="980" y="420" class="small">SMTP AUTH + DATA</text>
+
+  <line x1="1160" y1="490" x2="930" y2="490" class="msg"/>
+  <text x="980" y="480" class="small">250 OK / error</text>
+
+  <line x1="930" y1="550" x2="650" y2="550" class="msg"/>
+  <text x="720" y="540" class="small">return status</text>
+
+  <line x1="650" y1="610" x2="380" y2="610" class="msg"/>
+  <text x="445" y="600" class="small">exit 0 or 1</text>
+
+  <rect x="595" y="255" width="110" height="390" class="box" fill-opacity="0.25"/>
+  <rect x="875" y="345" width="110" height="230" class="box" fill-opacity="0.25"/>
+</svg>

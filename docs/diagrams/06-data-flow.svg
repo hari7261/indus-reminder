@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="760" viewBox="0 0 1300 760">
+  <defs>
+    <style>
+      .title { font: 700 30px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .label { font: 600 17px 'Segoe UI', sans-serif; fill: #0f172a; }
+      .small { font: 14px 'Segoe UI', sans-serif; fill: #334155; }
+      .node { fill: #fff; stroke: #0f172a; stroke-width: 2; rx: 12; }
+      .flow { stroke: #0f172a; stroke-width: 2.5; fill: none; marker-end: url(#arr); }
+    </style>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1300" height="760" fill="#ecfdf5"/>
+  <text x="40" y="60" class="title">Data Flow Diagram</text>
+
+  <rect x="70" y="150" width="280" height="130" class="node"/>
+  <text x="140" y="195" class="label">GitHub Secrets</text>
+  <text x="120" y="225" class="small">SMTP_* and MAIL_TO</text>
+
+  <rect x="70" y="350" width="280" height="130" class="node"/>
+  <text x="145" y="395" class="label">checklist.md</text>
+  <text x="120" y="425" class="small">markdown checklist text</text>
+
+  <rect x="470" y="240" width="350" height="220" class="node"/>
+  <text x="560" y="285" class="label">Go CLI Process</text>
+  <text x="515" y="320" class="small">validates env, reads file, builds message</text>
+  <text x="560" y="350" class="small">returns exit code</text>
+
+  <rect x="930" y="170" width="300" height="140" class="node"/>
+  <text x="1010" y="215" class="label">SMTP Payload</text>
+  <text x="970" y="245" class="small">RFC822 headers + body text</text>
+
+  <rect x="930" y="400" width="300" height="140" class="node"/>
+  <text x="1010" y="445" class="label">Recipient Inbox</text>
+  <text x="970" y="475" class="small">delivered reminder email</text>
+
+  <path class="flow" d="M 350 220 L 470 300"/>
+  <text x="355" y="260" class="small">env vars</text>
+
+  <path class="flow" d="M 350 415 L 470 375"/>
+  <text x="360" y="390" class="small">file content</text>
+
+  <path class="flow" d="M 820 300 L 930 240"/>
+  <text x="840" y="265" class="small">compose message</text>
+
+  <path class="flow" d="M 1080 310 L 1080 400" class="flow"/>
+  <text x="1100" y="360" class="small">SMTP transfer</text>
+</svg>
