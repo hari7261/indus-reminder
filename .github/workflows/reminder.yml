@@ -1,4 +1,4 @@
-name: Daily Indus Reminder
+name: Indus Reminder
 
 on:
   schedule:
@@ -10,13 +10,15 @@ on:
         required: false
         default: false
         type: boolean
+  push:
 
 permissions:
   contents: read
 
 jobs:
   send-reminder:
-    name: Build and send reminder
+    if: github.event_name != 'push'
+    name: Build and send daily reminder
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -28,7 +30,7 @@ jobs:
       MAIL_SUBJECT: ${{ vars.MAIL_SUBJECT }}
       REMINDER_TZ: Asia/Kolkata
       CHECKLIST_FILE: checklist.md
-      FORCE_SEND: ${{ inputs.force_send || 'false' }}
+      FORCE_SEND: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.force_send || 'false' }}
 
     steps:
       - name: Checkout source
@@ -46,3 +48,42 @@ jobs:
 
       - name: Execute reminder
         run: ./indus-reminder
+
+  push-deployment-test:
+    if: github.event_name == 'push'
+    name: Build and send deployment test emails (3x)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      REMINDER_TZ: Asia/Kolkata
+      CHECKLIST_FILE: checklist.md
+      FORCE_SEND: "true"
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          check-latest: true
+          cache: false
+
+      - name: Build binary
+        run: go build -trimpath -ldflags="-s -w" -o indus-reminder ./cmd/indus-reminder
+
+      - name: Send 3 deployment test emails (1 minute apart)
+        run: |
+          for i in 1 2 3; do
+            export MAIL_SUBJECT="Indus Reminder Deployment Test ${i}/3 - ${GITHUB_SHA::7}"
+            ./indus-reminder
+            if [ "$i" -lt 3 ]; then
+              sleep 60
+            fi
+          done

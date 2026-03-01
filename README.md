@@ -14,6 +14,7 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 4. The CLI sends one email via Gmail SMTP.
 5. Sundays are skipped both by cron (`1-6`) and by runtime guard.
 6. Manual `workflow_dispatch` supports `force_send=true` for Sunday-only delivery testing.
+7. Every `push` event runs a deployment test that sends 3 emails, 1 minute apart.
 
 ## Scheduling (UTC to Local)
 
@@ -22,6 +23,14 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 - Workflow cron: `0 11 * * 1-6`
 - Conversion: `11:00 UTC + 05:30 = 16:30 IST`
 - Sunday skip: Cron runs Monday-Saturday only (`1-6`), and the binary also exits early on local Sunday.
+
+## Push Deployment Test Mode
+
+- Trigger: every GitHub `push` event.
+- Behavior: sends 3 test emails with subjects `Deployment Test 1/3`, `2/3`, `3/3`.
+- Interval: 1 minute between each email.
+- Sunday handling: deployment tests force-send (`FORCE_SEND=true`) so testing works any day.
+- Daily reminder behavior remains unchanged for Monday-Saturday at 16:30 IST.
 
 ## Required Environment Variables
 
@@ -128,6 +137,7 @@ Package-level dependency direction and boundaries.
 - Cron is always evaluated in UTC.
 - Gmail SMTP requires App Password when 2FA is enabled.
 - This tool intentionally has no retry queue or persistent state.
+- Push deployment tests send 3 emails per push and can increase mailbox volume.
 
 ## Security Notes
 
