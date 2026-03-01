@@ -82,7 +82,7 @@ func LoadConfigFromEnv() (Config, error) {
 		cfg.FromAddress = cfg.User
 	}
 	if cfg.FromName == "" {
-		cfg.FromName = "Indus Reminder"
+		cfg.FromName = "Indus Software Reminder"
 	}
 
 	return cfg, nil

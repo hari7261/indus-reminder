@@ -95,6 +95,7 @@ func buildHTML(name string, items []string) string {
 
 	escapedName := html.EscapeString(name)
 	icon := inlineLogoSVG()
+	scene := inlineReminderSceneSVG()
 
 	return fmt.Sprintf(`<!doctype html>
 <html>
@@ -111,6 +112,7 @@ func buildHTML(name string, items []string) string {
         <p style="margin:0 0 8px 0;">Hey %s,</p>
         <p style="margin:0 0 10px 0;">Hope you are doing fine.</p>
         <p style="margin:0 0 10px 0;">I thought to remind you about a few important entries for today.</p>
+        <div style="margin:0 0 14px 0;text-align:center;">%s</div>
         <p style="margin:0 0 14px 0;">If everything is already done, that is wonderful. If not, please finish these before day end:</p>
         <ul style="padding-left:22px;margin:0 0 14px 0;">
           %s
@@ -127,7 +129,7 @@ func buildHTML(name string, items []string) string {
     </div>
   </div>
 </body>
-</html>`, icon, escapedName, list.String())
+</html>`, icon, escapedName, scene, list.String())
 }
 
 func inlineLogoSVG() string {
@@ -136,6 +138,26 @@ func inlineLogoSVG() string {
   <rect x="10" y="16" width="44" height="8" rx="4" fill="#FF9933"/>
   <rect x="10" y="40" width="44" height="8" rx="4" fill="#138808"/>
   <circle cx="32" cy="32" r="8" fill="none" stroke="#000080" stroke-width="2"/>
-  <text x="32" y="36" text-anchor="middle" style="font:700 9px 'Segoe UI', Arial, sans-serif;fill:#000080;">IR</text>
+</svg>`
+}
+
+func inlineReminderSceneSVG() string {
+	return `<svg role="img" aria-label="Reminder illustration" width="520" height="170" viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:inline-block;">
+  <rect x="1" y="1" width="518" height="168" rx="14" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="16" y="18" width="488" height="16" rx="8" fill="#FF9933"/>
+  <rect x="16" y="136" width="488" height="16" rx="8" fill="#138808"/>
+  <rect x="38" y="50" width="130" height="90" rx="12" fill="#f8fafc" stroke="#000080" stroke-width="2"/>
+  <rect x="50" y="64" width="88" height="8" rx="4" fill="#000080"/>
+  <rect x="50" y="82" width="98" height="6" rx="3" fill="#94a3b8"/>
+  <rect x="50" y="96" width="92" height="6" rx="3" fill="#94a3b8"/>
+  <rect x="50" y="110" width="76" height="6" rx="3" fill="#94a3b8"/>
+  <circle cx="242" cy="86" r="42" fill="#fff7ed" stroke="#FF9933" stroke-width="3"/>
+  <path d="M223 86l11 11 27-27" fill="none" stroke="#138808" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="350" cy="86" r="42" fill="#f0fdf4" stroke="#138808" stroke-width="3"/>
+  <path d="M331 86l11 11 27-27" fill="none" stroke="#000080" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="420" y="52" width="66" height="68" rx="12" fill="#ffffff" stroke="#000080" stroke-width="2"/>
+  <rect x="433" y="66" width="40" height="8" rx="4" fill="#FF9933"/>
+  <rect x="433" y="83" width="40" height="8" rx="4" fill="#000080"/>
+  <rect x="433" y="100" width="40" height="8" rx="4" fill="#138808"/>
 </svg>`
 }
