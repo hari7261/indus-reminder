@@ -68,8 +68,6 @@ func run() error {
 	templateContent := emailtemplate.Build(
 		envOrDefault("REMINDER_NAME", defaultReminderName),
 		string(checklistBody),
-		buildAssetURL("01-indus-reminder-logo.svg"),
-		buildAssetURL("02-daily-reminder-note.svg"),
 	)
 	msg.Body = templateContent.Plain
 	msg.HTMLBody = templateContent.HTML
@@ -89,10 +87,4 @@ func envOrDefault(key, defaultValue string) string {
 		return defaultValue
 	}
 	return value
-}
-
-func buildAssetURL(fileName string) string {
-	repo := envOrDefault("GITHUB_REPOSITORY", "hari7261/indus-reminder")
-	ref := envOrDefault("GITHUB_REF_NAME", "main")
-	return fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/docs/email-assets/%s", repo, ref, fileName)
 }

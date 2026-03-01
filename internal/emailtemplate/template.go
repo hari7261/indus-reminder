@@ -12,8 +12,8 @@ type Content struct {
 	HTML  string
 }
 
-// Build creates a friendly reminder email from checklist content and SVG links.
-func Build(name, checklistContent, logoURL, noteURL string) Content {
+// Build creates a friendly reminder email from checklist content.
+func Build(name, checklistContent string) Content {
 	displayName := strings.TrimSpace(name)
 	if displayName == "" {
 		displayName = "Boss Hari"
@@ -30,7 +30,7 @@ func Build(name, checklistContent, logoURL, noteURL string) Content {
 
 	return Content{
 		Plain: buildPlain(displayName, items),
-		HTML:  buildHTML(displayName, items, logoURL, noteURL),
+		HTML:  buildHTML(displayName, items),
 	}
 }
 
@@ -85,7 +85,7 @@ func buildPlain(name string, items []string) string {
 	return b.String()
 }
 
-func buildHTML(name string, items []string, logoURL string, noteURL string) string {
+func buildHTML(name string, items []string) string {
 	var list strings.Builder
 	for _, item := range items {
 		list.WriteString(`<li style="margin:0 0 10px 0;">`)
@@ -94,48 +94,37 @@ func buildHTML(name string, items []string, logoURL string, noteURL string) stri
 	}
 
 	escapedName := html.EscapeString(name)
-	escapedLogoURL := html.EscapeString(strings.TrimSpace(logoURL))
-	escapedNoteURL := html.EscapeString(strings.TrimSpace(noteURL))
-
-	logoBlock := ""
-	if escapedLogoURL != "" {
-		logoBlock = fmt.Sprintf(
-			`<div style="text-align:center;margin-bottom:10px;"><img src="%s" alt="Indus Reminder" style="max-width:260px;width:100%%;height:auto;border:0;display:inline-block;"/></div>`,
-			escapedLogoURL,
-		)
-	}
-
-	noteBlock := ""
-	if escapedNoteURL != "" {
-		noteBlock = fmt.Sprintf(
-			`<div style="text-align:center;margin:20px 0 8px 0;"><img src="%s" alt="Daily reminder note" style="max-width:520px;width:100%%;height:auto;border:0;display:inline-block;border-radius:14px;"/></div>`,
-			escapedNoteURL,
-		)
-	}
 
 	return fmt.Sprintf(`<!doctype html>
 <html>
-<body style="margin:0;padding:0;background:#f4f7fb;">
+<body style="margin:0;padding:0;background:#f8fafc;">
   <div style="max-width:680px;margin:24px auto;padding:0 14px;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#1f2937;">
-    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:20px;overflow:hidden;">
-      <div style="background:linear-gradient(135deg,#0ea5e9,#22c55e);padding:18px 18px 12px 18px;">
-        %s
-        <h1 style="margin:0;text-align:center;font-size:30px;line-height:1.2;color:#ffffff;">Indus Reminder</h1>
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,0.08);">
+      <div style="height:14px;background:#FF9933;"></div>
+      <div style="background:#ffffff;padding:14px 18px 10px 18px;text-align:center;">
+        <div style="display:inline-block;width:54px;height:54px;border:3px solid #000080;border-radius:50%%;line-height:48px;font-size:24px;font-weight:700;color:#000080;">IR</div>
+        <h1 style="margin:10px 0 0 0;text-align:center;font-size:30px;line-height:1.2;color:#000080;">Indus Reminder</h1>
       </div>
-      <div style="padding:24px 24px 10px 24px;font-size:16px;line-height:1.6;">
+      <div style="height:14px;background:#138808;"></div>
+      <div style="padding:24px 24px 16px 24px;font-size:16px;line-height:1.6;">
         <p style="margin:0 0 8px 0;">Hey %s,</p>
         <p style="margin:0 0 10px 0;">Hope you are doing fine.</p>
         <p style="margin:0 0 10px 0;">I thought to remind you about a few important entries for today.</p>
         <p style="margin:0 0 14px 0;">If everything is already done, that is wonderful. If not, please finish these before day end:</p>
-        <ul style="padding-left:22px;margin:0 0 6px 0;">
+        <ul style="padding-left:22px;margin:0 0 14px 0;">
           %s
         </ul>
-        %s
-        <p style="margin:0 0 10px 0;">You are doing great. Keep moving forward.</p>
+        <div style="border:1px solid #e5e7eb;border-left:6px solid #FF9933;background:#fff7ed;padding:12px 14px;border-radius:10px;margin:0 0 10px 0;">
+          If already done, no problem. Just continue your good work.
+        </div>
+        <div style="border:1px solid #e5e7eb;border-left:6px solid #138808;background:#f0fdf4;padding:12px 14px;border-radius:10px;margin:0 0 12px 0;">
+          If something is pending, please complete your work updates and daily entries.
+        </div>
+        <p style="margin:0 0 10px 0;color:#000080;font-weight:600;">You are doing great. Keep moving forward.</p>
         <p style="margin:0 0 0 0;">With care,<br/>Indus Reminder</p>
       </div>
     </div>
   </div>
 </body>
-</html>`, logoBlock, escapedName, list.String(), noteBlock)
+</html>`, escapedName, list.String())
 }

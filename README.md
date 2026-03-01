@@ -11,7 +11,7 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 1. GitHub Actions triggers the job at a UTC cron time mapped to local 16:30.
 2. The CLI loads `checklist.md` from the repository.
 3. SMTP credentials and recipient are read from environment variables.
-4. The CLI sends a styled email via Gmail SMTP with a warm message and visual cards.
+4. The CLI sends a styled tricolour email via Gmail SMTP with a warm message and inline visual layout.
 5. Sundays are skipped both by cron (`1-6`) and by runtime guard.
 6. Manual `workflow_dispatch` supports `force_send=true` for Sunday-only delivery testing.
 7. Every `push` event runs a deployment test that sends 3 emails, 1 minute apart.
@@ -93,7 +93,8 @@ The binary is designed to run in GitHub Actions and returns an error if executed
 
 ## Email Template Visuals
 
-The reminder email uses two SVG assets stored in this repository and linked in the HTML body:
+The reminder email uses an inline tricolour layout (no external image loading required in the email body).
+The SVG files below are design references kept in the repository:
 
 1. Logo Header  
 ![Email logo](docs/email-assets/01-indus-reminder-logo.svg)

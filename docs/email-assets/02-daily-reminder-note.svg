@@ -1,33 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
-  <defs>
-    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f0f9ff"/>
-      <stop offset="100%" stop-color="#f0fdf4"/>
-    </linearGradient>
-    <linearGradient id="top" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#0284c7"/>
-      <stop offset="100%" stop-color="#16a34a"/>
-    </linearGradient>
-    <style>
-      .head { font: 700 44px "Segoe UI", Arial, sans-serif; fill: #ffffff; }
-      .line { font: 500 34px "Segoe UI", Arial, sans-serif; fill: #1f2937; }
-      .soft { font: 500 30px "Segoe UI", Arial, sans-serif; fill: #334155; }
-      .sign { font: 600 30px "Segoe UI", Arial, sans-serif; fill: #0f766e; }
-    </style>
-  </defs>
+  <rect width="1200" height="760" fill="#f8fafc"/>
+  <rect x="80" y="48" width="1040" height="664" rx="34" fill="#ffffff" stroke="#e5e7eb" stroke-width="3"/>
 
-  <rect width="1200" height="760" fill="url(#page)"/>
-  <rect x="80" y="50" width="1040" height="660" rx="34" fill="#ffffff" stroke="#dbeafe" stroke-width="3"/>
-  <rect x="80" y="50" width="1040" height="118" rx="34" fill="url(#top)"/>
-  <rect x="80" y="134" width="1040" height="34" fill="url(#top)"/>
-  <text x="132" y="122" class="head">A gentle note from Indus Reminder</text>
+  <rect x="80" y="48" width="1040" height="56" rx="34" fill="#FF9933"/>
+  <rect x="80" y="104" width="1040" height="56" fill="#ffffff"/>
+  <rect x="80" y="160" width="1040" height="56" fill="#138808"/>
 
-  <text x="132" y="235" class="line">Hey Boss Hari,</text>
-  <text x="132" y="286" class="soft">Hope you are doing fine.</text>
-  <text x="132" y="337" class="soft">I suppose this is one reminder you may forget,</text>
-  <text x="132" y="388" class="soft">or maybe you already completed it.</text>
-  <text x="132" y="450" class="soft">If done, no problem. Keep going with your work.</text>
-  <text x="132" y="501" class="soft">If not, please register your work updates</text>
-  <text x="132" y="552" class="soft">and complete your daily entries.</text>
-  <text x="132" y="625" class="sign">You are doing great. Keep moving forward.</text>
+  <circle cx="168" cy="132" r="26" fill="#ffffff" stroke="#000080" stroke-width="4"/>
+  <text x="151" y="141" style="font:700 22px 'Segoe UI', Arial, sans-serif; fill:#000080;">IR</text>
+  <text x="220" y="143" style="font:700 38px 'Segoe UI', Arial, sans-serif; fill:#000080;">Indus Reminder</text>
+
+  <text x="132" y="274" style="font:600 40px 'Segoe UI', Arial, sans-serif; fill:#1f2937;">Hey Boss Hari,</text>
+  <text x="132" y="326" style="font:500 32px 'Segoe UI', Arial, sans-serif; fill:#334155;">Hope you are doing fine.</text>
+  <text x="132" y="378" style="font:500 32px 'Segoe UI', Arial, sans-serif; fill:#334155;">I thought to remind you about today&apos;s updates.</text>
+  <text x="132" y="430" style="font:500 32px 'Segoe UI', Arial, sans-serif; fill:#334155;">If done, no problem. Keep going with your work.</text>
+  <text x="132" y="482" style="font:500 32px 'Segoe UI', Arial, sans-serif; fill:#334155;">If pending, please complete your work updates</text>
+  <text x="132" y="534" style="font:500 32px 'Segoe UI', Arial, sans-serif; fill:#334155;">and your daily entries.</text>
+
+  <rect x="132" y="578" width="936" height="86" rx="14" fill="#f0fdf4" stroke="#138808" stroke-width="2"/>
+  <text x="166" y="632" style="font:600 34px 'Segoe UI', Arial, sans-serif; fill:#138808;">You are doing great. Keep moving forward.</text>
 </svg>
