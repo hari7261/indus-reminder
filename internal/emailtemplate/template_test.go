@@ -23,6 +23,9 @@ func TestBuildUsesChecklistItems(t *testing.T) {
 	if !strings.Contains(content.HTML, "Indus Reminder") {
 		t.Fatal("html content should include heading")
 	}
+	if !strings.Contains(content.HTML, "<svg") {
+		t.Fatal("html content should include inline svg icon")
+	}
 	if !strings.Contains(content.HTML, "#FF9933") || !strings.Contains(content.HTML, "#138808") {
 		t.Fatal("html content should use tricolour palette")
 	}

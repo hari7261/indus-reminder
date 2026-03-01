@@ -45,6 +45,8 @@ These must be provided at runtime (typically GitHub Secrets):
 Optional:
 
 - `MAIL_SUBJECT` (falls back to default subject if empty)
+- `MAIL_FROM` (header sender email shown in inbox, default `SMTP_USER`)
+- `MAIL_FROM_NAME` (header sender name, default `Indus Software Reminder`)
 - `REMINDER_NAME` (default `Boss Hari`)
 - `REMINDER_TZ` (default `Asia/Kolkata`)
 - `CHECKLIST_FILE` (default `checklist.md`)
@@ -59,7 +61,7 @@ Optional:
    - `SMTP_USER` = your Gmail address
    - `SMTP_PASS` = Gmail App Password
    - `MAIL_TO` = recipient email address
-3. Optionally add repository variables `MAIL_SUBJECT` and `REMINDER_NAME`.
+3. Optionally add repository variables `MAIL_SUBJECT`, `MAIL_FROM`, `MAIL_FROM_NAME`, and `REMINDER_NAME`.
 4. Enable Actions in your fork.
 5. Run workflow manually once using `workflow_dispatch` to validate configuration.
 6. If testing on Sunday, run manual dispatch with input `force_send=true`.
@@ -159,6 +161,7 @@ Package-level dependency direction and boundaries.
 - No secrets are hardcoded in source, workflow, or documentation.
 - SMTP credentials are loaded only from environment variables.
 - Logs avoid printing passwords or secret values.
+- Gmail SMTP still authenticates with `SMTP_USER`/`SMTP_PASS`; `MAIL_FROM` and `MAIL_FROM_NAME` only control display headers.
 
 ## License
 

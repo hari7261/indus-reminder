@@ -45,10 +45,20 @@ func TestLoadConfigFromEnvSuccess(t *testing.T) {
 	if cfg.To != "receiver@example.com" {
 		t.Fatalf("unexpected recipient: %s", cfg.To)
 	}
+	if cfg.FromAddress != "sender@example.com" {
+		t.Fatalf("unexpected from address: %s", cfg.FromAddress)
+	}
+	if cfg.FromName != "Indus Software Reminder" {
+		t.Fatalf("unexpected from name: %s", cfg.FromName)
+	}
 }
 
 func TestBuildPayload(t *testing.T) {
-	cfg := Config{User: "sender@example.com"}
+	cfg := Config{
+		User:        "sender@example.com",
+		FromAddress: "no-reply@indus-software.in",
+		FromName:    "Indus Software Reminder",
+	}
 	msg := Message{
 		To:       "receiver@example.com",
 		Subject:  "Daily Reminder",
@@ -59,7 +69,7 @@ func TestBuildPayload(t *testing.T) {
 	payload := string(buildPayload(cfg, msg))
 
 	checks := []string{
-		"From: sender@example.com",
+		"From: Indus Software Reminder <no-reply@indus-software.in>",
 		"To: receiver@example.com",
 		"Subject: Daily Reminder",
 		"Content-Type: multipart/alternative",
@@ -90,6 +100,28 @@ func TestBuildPayloadPlainTextOnly(t *testing.T) {
 	}
 	if strings.Contains(payload, "multipart/alternative") {
 		t.Fatal("did not expect multipart content type")
+	}
+}
+
+func TestLoadConfigFromEnvFromOverride(t *testing.T) {
+	t.Setenv("SMTP_HOST", "smtp.gmail.com")
+	t.Setenv("SMTP_PORT", "587")
+	t.Setenv("SMTP_USER", "sender@example.com")
+	t.Setenv("SMTP_PASS", "app-password")
+	t.Setenv("MAIL_TO", "receiver@example.com")
+	t.Setenv("MAIL_FROM", "no-reply@indus-software.in")
+	t.Setenv("MAIL_FROM_NAME", "Indus Software Reminder")
+
+	cfg, err := LoadConfigFromEnv()
+	if err != nil {
+		t.Fatalf("expected nil error, got %v", err)
+	}
+
+	if cfg.FromAddress != "no-reply@indus-software.in" {
+		t.Fatalf("unexpected from address: %s", cfg.FromAddress)
+	}
+	if cfg.FromName != "Indus Software Reminder" {
+		t.Fatalf("unexpected from name: %s", cfg.FromName)
 	}
 }
 

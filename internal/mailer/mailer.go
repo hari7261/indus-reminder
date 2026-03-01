@@ -13,11 +13,13 @@ import (
 
 // Config holds SMTP and email routing configuration loaded from env vars.
 type Config struct {
-	Host string
-	Port string
-	User string
-	Pass string
-	To   string
+	Host        string
+	Port        string
+	User        string
+	Pass        string
+	To          string
+	FromAddress string
+	FromName    string
 }
 
 // Message is the outgoing email payload.
@@ -42,11 +44,13 @@ func NewSMTPClient() *SMTPClient {
 
 func LoadConfigFromEnv() (Config, error) {
 	cfg := Config{
-		Host: strings.TrimSpace(os.Getenv("SMTP_HOST")),
-		Port: strings.TrimSpace(os.Getenv("SMTP_PORT")),
-		User: strings.TrimSpace(os.Getenv("SMTP_USER")),
-		Pass: strings.TrimSpace(os.Getenv("SMTP_PASS")),
-		To:   strings.TrimSpace(os.Getenv("MAIL_TO")),
+		Host:        strings.TrimSpace(os.Getenv("SMTP_HOST")),
+		Port:        strings.TrimSpace(os.Getenv("SMTP_PORT")),
+		User:        strings.TrimSpace(os.Getenv("SMTP_USER")),
+		Pass:        strings.TrimSpace(os.Getenv("SMTP_PASS")),
+		To:          strings.TrimSpace(os.Getenv("MAIL_TO")),
+		FromAddress: strings.TrimSpace(os.Getenv("MAIL_FROM")),
+		FromName:    strings.TrimSpace(os.Getenv("MAIL_FROM_NAME")),
 	}
 
 	missing := make([]string, 0, 5)
@@ -73,6 +77,12 @@ func LoadConfigFromEnv() (Config, error) {
 
 	if err := cfg.validate(); err != nil {
 		return Config{}, err
+	}
+	if cfg.FromAddress == "" {
+		cfg.FromAddress = cfg.User
+	}
+	if cfg.FromName == "" {
+		cfg.FromName = "Indus Reminder"
 	}
 
 	return cfg, nil
@@ -130,7 +140,7 @@ func buildPayload(cfg Config, msg Message) []byte {
 
 	if strings.TrimSpace(msg.HTMLBody) == "" {
 		lines := []string{
-			fmt.Sprintf("From: %s", cfg.User),
+			fmt.Sprintf("From: %s", formatFromHeader(cfg)),
 			fmt.Sprintf("To: %s", msg.To),
 			fmt.Sprintf("Subject: %s", subject),
 			"MIME-Version: 1.0",
@@ -144,7 +154,7 @@ func buildPayload(cfg Config, msg Message) []byte {
 	htmlBody := normalizeCRLF(msg.HTMLBody)
 	boundary := "indus-reminder-boundary"
 	lines := []string{
-		fmt.Sprintf("From: %s", cfg.User),
+		fmt.Sprintf("From: %s", formatFromHeader(cfg)),
 		fmt.Sprintf("To: %s", msg.To),
 		fmt.Sprintf("Subject: %s", subject),
 		"MIME-Version: 1.0",
@@ -168,4 +178,19 @@ func buildPayload(cfg Config, msg Message) []byte {
 func normalizeCRLF(input string) string {
 	normalized := strings.ReplaceAll(input, "\r\n", "\n")
 	return strings.ReplaceAll(normalized, "\n", "\r\n")
+}
+
+func formatFromHeader(cfg Config) string {
+	fromAddress := strings.TrimSpace(cfg.FromAddress)
+	if fromAddress == "" {
+		fromAddress = cfg.User
+	}
+
+	fromName := strings.TrimSpace(cfg.FromName)
+	if fromName == "" {
+		return fromAddress
+	}
+
+	safeName := strings.NewReplacer("\"", "", "\r", "", "\n", "").Replace(fromName)
+	return fmt.Sprintf("%s <%s>", safeName, fromAddress)
 }

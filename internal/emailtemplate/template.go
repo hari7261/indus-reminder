@@ -94,6 +94,7 @@ func buildHTML(name string, items []string) string {
 	}
 
 	escapedName := html.EscapeString(name)
+	icon := inlineLogoSVG()
 
 	return fmt.Sprintf(`<!doctype html>
 <html>
@@ -102,7 +103,7 @@ func buildHTML(name string, items []string) string {
     <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,0.08);">
       <div style="height:14px;background:#FF9933;"></div>
       <div style="background:#ffffff;padding:14px 18px 10px 18px;text-align:center;">
-        <div style="display:inline-block;width:54px;height:54px;border:3px solid #000080;border-radius:50%%;line-height:48px;font-size:24px;font-weight:700;color:#000080;">IR</div>
+        %s
         <h1 style="margin:10px 0 0 0;text-align:center;font-size:30px;line-height:1.2;color:#000080;">Indus Reminder</h1>
       </div>
       <div style="height:14px;background:#138808;"></div>
@@ -126,5 +127,15 @@ func buildHTML(name string, items []string) string {
     </div>
   </div>
 </body>
-</html>`, escapedName, list.String())
+</html>`, icon, escapedName, list.String())
+}
+
+func inlineLogoSVG() string {
+	return `<svg role="img" aria-label="Indus Reminder logo" width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;">
+  <rect x="2" y="2" width="60" height="60" rx="30" fill="#ffffff" stroke="#000080" stroke-width="2"/>
+  <rect x="10" y="16" width="44" height="8" rx="4" fill="#FF9933"/>
+  <rect x="10" y="40" width="44" height="8" rx="4" fill="#138808"/>
+  <circle cx="32" cy="32" r="8" fill="none" stroke="#000080" stroke-width="2"/>
+  <text x="32" y="36" text-anchor="middle" style="font:700 9px 'Segoe UI', Arial, sans-serif;fill:#000080;">IR</text>
+</svg>`
 }
