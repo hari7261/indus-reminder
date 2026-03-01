@@ -8,7 +8,7 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 
 ## How It Works
 
-1. GitHub Actions triggers the job at a UTC cron time mapped to local 16:00.
+1. GitHub Actions triggers the job at a UTC cron time mapped to local 16:30.
 2. The CLI loads `checklist.md` from the repository.
 3. SMTP credentials and recipient are read from environment variables.
 4. The CLI sends one email via Gmail SMTP.
@@ -17,9 +17,9 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 ## Scheduling (UTC to Local)
 
 - Local timezone used: `Asia/Kolkata` (`UTC+05:30`)
-- Target local send time: `16:00`
-- Workflow cron: `30 10 * * 1-6`
-- Conversion: `10:30 UTC + 05:30 = 16:00 IST`
+- Target local send time: `16:30`
+- Workflow cron: `0 11 * * 1-6`
+- Conversion: `11:00 UTC + 05:30 = 16:30 IST`
 - Sunday skip: Cron runs Monday-Saturday only (`1-6`), and the binary also exits early on local Sunday.
 
 ## Required Environment Variables

@@ -21,7 +21,7 @@
 
   <rect x="120" y="130" width="260" height="90" class="step"/>
   <text x="165" y="170" class="label">Schedule Trigger</text>
-  <text x="145" y="198" class="small">cron: 30 10 * * 1-6 (UTC)</text>
+  <text x="145" y="198" class="small">cron: 0 11 * * 1-6 (UTC)</text>
 
   <rect x="120" y="280" width="260" height="90" class="step"/>
   <text x="165" y="320" class="label">Checkout Source</text>
