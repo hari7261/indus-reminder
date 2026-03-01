@@ -22,9 +22,10 @@ type Config struct {
 
 // Message is the outgoing email payload.
 type Message struct {
-	To      string
-	Subject string
-	Body    string
+	To       string
+	Subject  string
+	Body     string
+	HTMLBody string
 }
 
 // Sender defines behavior for a mail delivery implementation.
@@ -125,17 +126,46 @@ func (s *SMTPClient) Send(cfg Config, msg Message) error {
 
 func buildPayload(cfg Config, msg Message) []byte {
 	subject := strings.NewReplacer("\r", "", "\n", "").Replace(strings.TrimSpace(msg.Subject))
-	body := strings.ReplaceAll(msg.Body, "\r\n", "\n")
-	body = strings.ReplaceAll(body, "\n", "\r\n")
+	body := normalizeCRLF(msg.Body)
 
+	if strings.TrimSpace(msg.HTMLBody) == "" {
+		lines := []string{
+			fmt.Sprintf("From: %s", cfg.User),
+			fmt.Sprintf("To: %s", msg.To),
+			fmt.Sprintf("Subject: %s", subject),
+			"MIME-Version: 1.0",
+			"Content-Type: text/plain; charset=UTF-8",
+			"",
+			body,
+		}
+		return []byte(strings.Join(lines, "\r\n"))
+	}
+
+	htmlBody := normalizeCRLF(msg.HTMLBody)
+	boundary := "indus-reminder-boundary"
 	lines := []string{
 		fmt.Sprintf("From: %s", cfg.User),
 		fmt.Sprintf("To: %s", msg.To),
 		fmt.Sprintf("Subject: %s", subject),
 		"MIME-Version: 1.0",
+		fmt.Sprintf("Content-Type: multipart/alternative; boundary=%q", boundary),
+		"",
+		fmt.Sprintf("--%s", boundary),
 		"Content-Type: text/plain; charset=UTF-8",
 		"",
 		body,
+		"",
+		fmt.Sprintf("--%s", boundary),
+		"Content-Type: text/html; charset=UTF-8",
+		"",
+		htmlBody,
+		"",
+		fmt.Sprintf("--%s--", boundary),
 	}
 	return []byte(strings.Join(lines, "\r\n"))
+}
+
+func normalizeCRLF(input string) string {
+	normalized := strings.ReplaceAll(input, "\r\n", "\n")
+	return strings.ReplaceAll(normalized, "\n", "\r\n")
 }

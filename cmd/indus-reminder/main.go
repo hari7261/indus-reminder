@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hari7261/indus-reminder/internal/emailtemplate"
 	"github.com/hari7261/indus-reminder/internal/mailer"
 )
 
@@ -15,6 +16,7 @@ const (
 	defaultChecklistFile = "checklist.md"
 	defaultTimezone      = "Asia/Kolkata"
 	defaultSubject       = "Indus Reminder: Update work trackers and personal checklist"
+	defaultReminderName  = "Boss Hari"
 )
 
 func main() {
@@ -62,8 +64,15 @@ func run() error {
 	msg := mailer.Message{
 		To:      cfg.To,
 		Subject: envOrDefault("MAIL_SUBJECT", defaultSubject),
-		Body:    string(checklistBody),
 	}
+	templateContent := emailtemplate.Build(
+		envOrDefault("REMINDER_NAME", defaultReminderName),
+		string(checklistBody),
+		buildAssetURL("01-indus-reminder-logo.svg"),
+		buildAssetURL("02-daily-reminder-note.svg"),
+	)
+	msg.Body = templateContent.Plain
+	msg.HTMLBody = templateContent.HTML
 
 	client := mailer.NewSMTPClient()
 	if err := client.Send(cfg, msg); err != nil {
@@ -80,4 +89,10 @@ func envOrDefault(key, defaultValue string) string {
 		return defaultValue
 	}
 	return value
+}
+
+func buildAssetURL(fileName string) string {
+	repo := envOrDefault("GITHUB_REPOSITORY", "hari7261/indus-reminder")
+	ref := envOrDefault("GITHUB_REF_NAME", "main")
+	return fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/docs/email-assets/%s", repo, ref, fileName)
 }

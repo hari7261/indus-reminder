@@ -50,9 +50,10 @@ func TestLoadConfigFromEnvSuccess(t *testing.T) {
 func TestBuildPayload(t *testing.T) {
 	cfg := Config{User: "sender@example.com"}
 	msg := Message{
-		To:      "receiver@example.com",
-		Subject: "Daily Reminder",
-		Body:    "line-one\nline-two",
+		To:       "receiver@example.com",
+		Subject:  "Daily Reminder",
+		Body:     "line-one\nline-two",
+		HTMLBody: "<p>line-one</p>",
 	}
 
 	payload := string(buildPayload(cfg, msg))
@@ -61,13 +62,34 @@ func TestBuildPayload(t *testing.T) {
 		"From: sender@example.com",
 		"To: receiver@example.com",
 		"Subject: Daily Reminder",
+		"Content-Type: multipart/alternative",
 		"line-one\r\nline-two",
+		"Content-Type: text/html; charset=UTF-8",
+		"<p>line-one</p>",
 	}
 
 	for _, check := range checks {
 		if !strings.Contains(payload, check) {
 			t.Fatalf("payload missing %q", check)
 		}
+	}
+}
+
+func TestBuildPayloadPlainTextOnly(t *testing.T) {
+	cfg := Config{User: "sender@example.com"}
+	msg := Message{
+		To:      "receiver@example.com",
+		Subject: "Daily Reminder",
+		Body:    "line-one\nline-two",
+	}
+
+	payload := string(buildPayload(cfg, msg))
+
+	if !strings.Contains(payload, "Content-Type: text/plain; charset=UTF-8") {
+		t.Fatal("expected plain text content type")
+	}
+	if strings.Contains(payload, "multipart/alternative") {
+		t.Fatal("did not expect multipart content type")
 	}
 }
 

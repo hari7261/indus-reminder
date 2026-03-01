@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+    <linearGradient id="pill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#f0fdf4" stop-opacity="0.95"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 84px "Segoe UI", Arial, sans-serif; fill: #ffffff; }
+      .subtitle { font: 500 34px "Segoe UI", Arial, sans-serif; fill: #e2f8ff; }
+      .pill { font: 600 30px "Segoe UI", Arial, sans-serif; fill: #0f766e; }
+      .spark { fill: #ffffff; opacity: 0.7; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="420" rx="36" fill="url(#bg)"/>
+
+  <circle cx="112" cy="88" r="10" class="spark"/>
+  <circle cx="1040" cy="76" r="8" class="spark"/>
+  <circle cx="1080" cy="124" r="5" class="spark"/>
+  <circle cx="180" cy="338" r="7" class="spark"/>
+  <circle cx="1020" cy="332" r="9" class="spark"/>
+
+  <rect x="80" y="72" width="138" height="138" rx="28" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.5" stroke-width="3"/>
+  <path d="M126 148c0-25 18-43 42-43 17 0 30 8 36 22l-20 9c-3-8-9-12-17-12-11 0-20 9-20 24 0 14 9 24 20 24 8 0 14-4 17-12l20 9c-6 14-19 22-36 22-24 0-42-18-42-43z" fill="#ffffff"/>
+
+  <text x="254" y="170" class="title">Indus Reminder</text>
+  <text x="258" y="228" class="subtitle">A warm daily note for your important updates</text>
+
+  <rect x="255" y="274" width="690" height="82" rx="41" fill="url(#pill)"/>
+  <text x="304" y="326" class="pill">Stay clear. Stay calm. Keep your day complete.</text>
+</svg>

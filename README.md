@@ -11,7 +11,7 @@ Teams and individuals often forget end-of-day hygiene tasks (tracker updates, bl
 1. GitHub Actions triggers the job at a UTC cron time mapped to local 16:30.
 2. The CLI loads `checklist.md` from the repository.
 3. SMTP credentials and recipient are read from environment variables.
-4. The CLI sends one email via Gmail SMTP.
+4. The CLI sends a styled email via Gmail SMTP with a warm message and visual cards.
 5. Sundays are skipped both by cron (`1-6`) and by runtime guard.
 6. Manual `workflow_dispatch` supports `force_send=true` for Sunday-only delivery testing.
 7. Every `push` event runs a deployment test that sends 3 emails, 1 minute apart.
@@ -45,6 +45,7 @@ These must be provided at runtime (typically GitHub Secrets):
 Optional:
 
 - `MAIL_SUBJECT` (falls back to default subject if empty)
+- `REMINDER_NAME` (default `Boss Hari`)
 - `REMINDER_TZ` (default `Asia/Kolkata`)
 - `CHECKLIST_FILE` (default `checklist.md`)
 - `FORCE_SEND` (default `false`, intended for manual Sunday testing)
@@ -58,7 +59,7 @@ Optional:
    - `SMTP_USER` = your Gmail address
    - `SMTP_PASS` = Gmail App Password
    - `MAIL_TO` = recipient email address
-3. Optionally add repository variable `MAIL_SUBJECT`.
+3. Optionally add repository variables `MAIL_SUBJECT` and `REMINDER_NAME`.
 4. Enable Actions in your fork.
 5. Run workflow manually once using `workflow_dispatch` to validate configuration.
 6. If testing on Sunday, run manual dispatch with input `force_send=true`.
@@ -76,16 +77,29 @@ The binary is designed to run in GitHub Actions and returns an error if executed
 
 ```text
 .
-??? cmd/indus-reminder/main.go
-??? internal/mailer/mailer.go
-??? internal/mailer/mailer_test.go
-??? checklist.md
-??? .github/workflows/reminder.yml
-??? docs/diagrams/
-??? README.md
-??? LICENSE
-??? .gitignore
+|-- cmd/indus-reminder/main.go
+|-- internal/mailer/mailer.go
+|-- internal/mailer/mailer_test.go
+|-- internal/emailtemplate/template.go
+|-- internal/emailtemplate/template_test.go
+|-- checklist.md
+|-- .github/workflows/reminder.yml
+|-- docs/diagrams/
+|-- docs/email-assets/
+|-- README.md
+|-- LICENSE
+`-- .gitignore
 ```
+
+## Email Template Visuals
+
+The reminder email uses two SVG assets stored in this repository and linked in the HTML body:
+
+1. Logo Header  
+![Email logo](docs/email-assets/01-indus-reminder-logo.svg)
+
+2. Reminder Note Card  
+![Reminder note](docs/email-assets/02-daily-reminder-note.svg)
 
 ## Architecture & Workflows
 

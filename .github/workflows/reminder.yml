@@ -28,6 +28,7 @@ jobs:
       SMTP_PASS: ${{ secrets.SMTP_PASS }}
       MAIL_TO: ${{ secrets.MAIL_TO }}
       MAIL_SUBJECT: ${{ vars.MAIL_SUBJECT }}
+      REMINDER_NAME: ${{ vars.REMINDER_NAME }}
       REMINDER_TZ: Asia/Kolkata
       CHECKLIST_FILE: checklist.md
       FORCE_SEND: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.force_send || 'false' }}
@@ -60,6 +61,7 @@ jobs:
       SMTP_USER: ${{ secrets.SMTP_USER }}
       SMTP_PASS: ${{ secrets.SMTP_PASS }}
       MAIL_TO: ${{ secrets.MAIL_TO }}
+      REMINDER_NAME: ${{ vars.REMINDER_NAME }}
       REMINDER_TZ: Asia/Kolkata
       CHECKLIST_FILE: checklist.md
       FORCE_SEND: "true"
