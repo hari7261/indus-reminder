@@ -32,6 +32,7 @@ jobs:
         with:
           go-version-file: go.mod
           check-latest: true
+          cache: false
 
       - name: Build binary
         run: go build -trimpath -ldflags="-s -w" -o indus-reminder ./cmd/indus-reminder
